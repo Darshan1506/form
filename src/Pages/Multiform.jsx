@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { AiOutlineArrowRight } from "react-icons/ai";
 import { RxCross1 } from "react-icons/rx";
+import Upload from "../Components/Upload";
 const questions = [
   {
     id: 0,
@@ -130,6 +131,7 @@ const questions = [
     description:
       "Add your email below to get notified as soon as it is available.",
     placeholder: "yup yup",
+    selectYesOrNo: true,
     err: "Hmm..Name is missing",
   },
   {
@@ -143,6 +145,7 @@ const questions = [
   {
     id: 9,
     ques: "Upload your pic",
+    upload: true,
     description:
       "Add your email below to get notified as soon as it is available.",
     placeholder: "yup yup",
@@ -156,11 +159,13 @@ function Multiform() {
     const storedCurrentStep = localStorage.getItem("currentStep");
     return storedCurrentStep ? parseInt(storedCurrentStep, 10) : 0;
   });
+
   const [questionsPerStep, setQuestionsPerStep] = useState([3, 1, 3, 3]);
   const [formData, setFormData] = useState(() => {
     const storedData = localStorage.getItem("formData");
     return storedData ? JSON.parse(storedData) : [];
   });
+  const [selectedOption, setSelectedOption] = useState("");
 
   const handleOptionClick = (index, option) => {
     let updatedSelectedOptions;
@@ -280,13 +285,41 @@ function Multiform() {
                             ? "bg-[#c2d4f9] text-[#4A7BE5] border-[#4A7BE5] border-solid border-2 rounded-md"
                             : "text-[#5A81D5D9] bg-[#E1E7F53D] border-[#E1E7F53D] border-2 rounded-md"
                         }`}
-                        onClick={() => handleOptionClick(question.id, option)}
+                        onClick={() => handleInputChange(question.id, option)}
                       >
                         {option}
                       </button>
                     ))}
                   </div>
                 </div>
+              ) : question.selectYesOrNo ? (
+                <div className="flex flex-col gap-2">
+                  <button
+                    type="radio"
+                    onClick={() => handleInputChange(question.id, "Yes")}
+                    className={`${
+                      formData[question.id] === "Yes"
+                        ? "bg-gradient-to-r from-blue-300 via-blue-300 to-blue-300 bg-opacity-12 border-[#4A7BE5] border-2 rounded-md"
+                        : "bg-[#E1E7F53D] border-2 border-[#E1E7F53D]"
+                    } text-start p-2`}
+                  >
+                    Yes
+                  </button>
+                  <button
+                    type="radio"
+                    onClick={() => handleInputChange(question.id, "No")}
+                    className={`${
+                      formData[question.id] === "No"
+                        ? "bg-gradient-to-r from-blue-300 via-blue-300 to-blue-300 bg-opacity-12 border-[#4A7BE5] border-2 rounded-md"
+                        : "border-2 border-[#E1E7F53D]"
+                    } text-start p-2`}
+                  >
+                    {console.log("yes, no", formData[question.id])}
+                    No
+                  </button>
+                </div>
+              ) : question.upload ? (
+                <Upload />
               ) : (
                 <input
                   id="campaignName"
