@@ -18,15 +18,19 @@ const Upload = () => {
   };
   return (
     <div
-      className={` cursor-pointer h-[114px] bg-[#F8FAFD] gap-2 flex flex-col justify-center items-center rounded-[6px] border-[#CED9F2] border-1 
+      className={` cursor-pointer h-[114px] gap-2 flex flex-col justify-center items-center rounded-[6px] ${
+        image
+          ? "bg-blue-300 bg-opacity-[0.3] border-[#4A7BE5] border-2"
+          : "border-[#CED9F2] border-1 bg-[#F8FAFD]"
+      } 
     border ${onDrag ? "border-dashed" : "border-solid"} `}
       onDragOver={(e) => handleDrag(e)}
       onDrop={(e) => handleDrop(e)}
       onClick={() => imageSelect.current.click()}
     >
       {image ? (
-        <div className="flex flex-col justify-center gap-2 items-center  text-[0.5rem] opacity-[0.5]">
-          <img className="w-[13px] h-[13px]" src={URL.createObjectURL(image)} />
+        <div className="flex flex-col  justify-center gap-2 items-center  text-[0.7rem] opacity-[0.5]">
+          <img className="w-[15px] h-[15px]" src={URL.createObjectURL(image)} />
           <p>{image.name}</p>
         </div>
       ) : (

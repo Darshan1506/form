@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { AiOutlineArrowRight } from "react-icons/ai";
 import { RxCross1 } from "react-icons/rx";
 import Upload from "../Components/Upload";
+import Range from "../Components/Range";
 const questions = [
   {
     id: 0,
@@ -112,6 +113,7 @@ const questions = [
   {
     id: 5,
     ques: "Your preferred cheque size",
+    range: true,
     description:
       "Add your email below to get notified as soon as it is available.",
     placeholder: "yup yup",
@@ -165,16 +167,21 @@ function Multiform() {
     const storedData = localStorage.getItem("formData");
     return storedData ? JSON.parse(storedData) : [];
   });
-  const [selectedOption, setSelectedOption] = useState("");
 
-  const handleOptionClick = (index, option) => {
+  const handleOptionClick = (e, index, option) => {
+    e.preventDefault();
     let updatedSelectedOptions;
-    if (formData[index].includes(option)) {
-      updatedSelectedOptions = formData[index].filter(
-        (item) => item !== option
-      );
+    console.log(Array.isArray(formData[index]));
+    if (Array.isArray(formData[index])) {
+      if (formData[index].includes(option)) {
+        updatedSelectedOptions = formData[index].filter(
+          (item) => item !== option
+        );
+      } else {
+        updatedSelectedOptions = [...formData[index], option];
+      }
     } else {
-      updatedSelectedOptions = [...formData[index], option];
+      updatedSelectedOptions = [option];
     }
 
     handleInputChange(index, updatedSelectedOptions);
@@ -281,11 +288,13 @@ function Multiform() {
                         key={index}
                         type="button" // Use type="button" to prevent form submission
                         className={`m-[2px] p-1 text-[1rem]  ${
-                          formData[question.id].includes(option)
+                          formData[question.id]?.includes(option)
                             ? "bg-[#c2d4f9] text-[#4A7BE5] border-[#4A7BE5] border-solid border-2 rounded-md"
                             : "text-[#5A81D5D9] bg-[#E1E7F53D] border-[#E1E7F53D] border-2 rounded-md"
                         }`}
-                        onClick={() => handleInputChange(question.id, option)}
+                        onClick={(e) =>
+                          handleOptionClick(e, question.id, option)
+                        }
                       >
                         {option}
                       </button>
@@ -314,12 +323,13 @@ function Multiform() {
                         : "border-2 border-[#E1E7F53D]"
                     } text-start p-2`}
                   >
-                    {console.log("yes, no", formData[question.id])}
                     No
                   </button>
                 </div>
               ) : question.upload ? (
                 <Upload />
+              ) : question.range ? (
+                <Range />
               ) : (
                 <input
                   id="campaignName"
