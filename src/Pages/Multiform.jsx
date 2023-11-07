@@ -156,12 +156,14 @@ const questions = [
 ];
 
 function Multiform() {
+  const [error, setError] = useState([]);
   const [currentStep, setCurrentStep] = useState(() => {
     // Try to retrieve the currentStep value from localStorage
     const storedCurrentStep = localStorage.getItem("currentStep");
     return storedCurrentStep ? parseInt(storedCurrentStep, 10) : 0;
   });
 
+  const [updateError, setUpdateError] = useState([]);
   const [questionsPerStep, setQuestionsPerStep] = useState([3, 1, 3, 3]);
   const [formData, setFormData] = useState(() => {
     const storedData = localStorage.getItem("formData");
@@ -193,6 +195,7 @@ function Multiform() {
   }, [formData, currentStep]);
 
   const totalSteps = questionsPerStep.length;
+
   const handlePrev = (e) => {
     e.preventDefault();
     if (currentStep === 0) return currentStep;
@@ -200,11 +203,37 @@ function Multiform() {
       setCurrentStep(currentStep - 1);
     }
   };
+
+  useEffect(() => {
+    const ques = getCurrentQuestions();
+    let updateError = [Array(questionsPerStep.length - 1).fill(true)];
+    if (Array.isArray(error)) {
+      console.log(updateError);
+
+      ques.forEach((ques, index) => {
+        if (
+          formData[ques.id] !== undefined &&
+          formData[ques.id]?.length === 0
+        ) {
+          console.log(formData[ques.id]);
+          updateError[index] = true;
+        } else {
+          console.log(formData[ques.id]);
+          updateError[index] = false;
+        }
+        console.log("upd", updateError);
+        setError(updateError);
+        console.log("neww", error);
+      });
+    }
+  }, [currentStep, formData]);
+
   const handleNext = (e) => {
     e.preventDefault();
-    if (currentStep === 10) return currentStep;
-    if (currentStep < totalSteps - 1) {
-      setCurrentStep(currentStep + 1);
+    if (Array.isArray(error)) {
+      if (!error.includes(true) && currentStep < totalSteps - 1) {
+        setCurrentStep(currentStep + 1);
+      }
     }
   };
 
@@ -239,13 +268,14 @@ function Multiform() {
 
   const handleInputChange = (index, value) => {
     const updatedFormData = [...formData];
+
     updatedFormData[index] = value;
     setFormData(updatedFormData);
   };
   console.log(formData);
 
   return (
-    <div className="w-full flex justify-center items-center">
+    <div className="w-full h-[100%] flex justify-center items-center">
       <div className="relative border rounded-[10px] w-[70%] my-[10vh] border-[#E5E8F2] border-solid bottom-2">
         <div className="mx-6 mt-6 flex justify-between">
           <div className="flex gap-3">
@@ -343,8 +373,29 @@ function Multiform() {
                 />
               )}
             </div>
+            {console.log("jhedues", error[idx])}
           </div>
         ))}
+
+        <div className="flex justify-between mx-6 mb-6 text-[#fff] p-2 text-[1rem]">
+          <div className="text-red-500">
+            {error?.includes(true) ? "All fileds are required" : ""}
+          </div>
+          <div>
+            {currentStep === totalSteps - 1 ? (
+              <button className="bg-[#4A7BE5] px-[18px] py-[12px] text-[18px] rounded-[5.926px] border border-solid ">
+                Submit Response
+              </button>
+            ) : (
+              <button
+                onClick={(e) => handleNext(e)}
+                className="bg-[#4A7BE5] px-[18px] py-[12px] text-[18px] rounded-[5.926px] border border-solid "
+              >
+                Next
+              </button>
+            )}
+          </div>
+        </div>
       </div>
     </div>
   );
