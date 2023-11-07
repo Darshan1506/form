@@ -163,7 +163,7 @@ function Multiform() {
     return storedCurrentStep ? parseInt(storedCurrentStep, 10) : 0;
   });
 
-  const [updateError, setUpdateError] = useState([]);
+  const [updateError, setUpdateError] = useState([true]);
   const [questionsPerStep, setQuestionsPerStep] = useState([3, 1, 3, 3]);
   const [formData, setFormData] = useState(() => {
     const storedData = localStorage.getItem("formData");
@@ -203,6 +203,13 @@ function Multiform() {
       setCurrentStep(currentStep - 1);
     }
   };
+  const getCurrentQuestions = () => {
+    const startIdx = questionsPerStep
+      .slice(0, currentStep)
+      .reduce((acc, val) => acc + val, 0);
+    const endIdx = startIdx + questionsPerStep[currentStep];
+    return questions.slice(startIdx, endIdx);
+  };
 
   useEffect(() => {
     const ques = getCurrentQuestions();
@@ -211,8 +218,9 @@ function Multiform() {
       console.log(updateError);
 
       ques.forEach((ques, index) => {
+        
         if (
-          formData[ques.id] !== undefined &&
+          formData[ques.id] === undefined ||
           formData[ques.id]?.length === 0
         ) {
           console.log(formData[ques.id]);
@@ -224,12 +232,17 @@ function Multiform() {
         console.log("upd", updateError);
         setError(updateError);
         console.log("neww", error);
-      });
+      }
+      
+      );
     }
-  }, [currentStep, formData]);
+  }, [currentStep, formData,  questionsPerStep.length]);
 
   const handleNext = (e) => {
     e.preventDefault();
+
+
+    
     if (Array.isArray(error)) {
       if (!error.includes(true) && currentStep < totalSteps - 1) {
         setCurrentStep(currentStep + 1);
@@ -237,14 +250,7 @@ function Multiform() {
     }
   };
 
-  const getCurrentQuestions = () => {
-    const startIdx = questionsPerStep
-      .slice(0, currentStep)
-      .reduce((acc, val) => acc + val, 0);
-    const endIdx = startIdx + questionsPerStep[currentStep];
-    return questions.slice(startIdx, endIdx);
-  };
-
+  
   useEffect(() => {
     // Check the screen width and update isMobile state
     const checkScreenSize = () => {
@@ -373,7 +379,7 @@ function Multiform() {
                 />
               )}
             </div>
-            {console.log("jhedues", error[idx])}
+            {/* {console.log("jhedues", error[idx])} */}
           </div>
         ))}
 
