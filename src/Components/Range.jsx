@@ -1,23 +1,66 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+import { useValues } from "../context";
+const Range = ({question}) => {
 
-const Range = () => {
-  const [inputValues, setInputValues] = useState({
-    min: "",
-    max: "",
+  console.log(question)
+  const [inputValues, setInputValues] = useState(() => {
+    // Initialize the state with values from local storage, or an empty array if not found
+    const storedValues = JSON.parse(localStorage.getItem("inputValues"));
+    return Array.isArray(storedValues) ? storedValues : [];
   });
 
-  const handleInputChange = (e) => {
+  const {
+    formData,
+            setFormData,
+            error,
+            setError,
+            allErrors,
+            setAllErrors,
+            handleInputChange,
+            handleOptionClick,
+            getCurrentQuestions ,
+            currentStep, setCurrentStep,
+            questionsPerStep, setQuestionsPerStep,
+            totalSteps,
+
+
+  } = useValues();
+  const handleIChange = (e) => {
     const { name, value } = e.target;
-    //error handling validation
-    if (name === "min" && parseFloat(value) > parseFloat(inputValues.max)) {
-      return;
+  console.log(allErrors[question.id])
+    
+  
+    const updatedInputValues = [...inputValues];
+    if (name === "min") {
+      updatedInputValues[0] = parseInt(value);
+    
+    } else if (name === "max") {
+      updatedInputValues[1] = parseInt(value);
     }
-    setInputValues({
-      ...inputValues,
-      [name]: value,
-    });
+  
+    setInputValues(updatedInputValues);
+    formData[question.id] = updatedInputValues;
   };
 
+  useEffect(() => {
+
+    if ( inputValues[0] < 1000 || inputValues[0]  > inputValues[1]) {
+      allErrors[question.id] = true;
+      error[1] = true;
+      
+    }else{
+      allErrors[question.id] = false;
+      error[1] = false;
+    }
+
+    
+    localStorage.setItem("inputValues", JSON.stringify(inputValues));
+  }, [inputValues])
+
+  console.log(error)
+  console.log(allErrors)
+
+  console.log(formData)
   console.log(inputValues);
   return (
     <div className="flex items-center gap-2">
@@ -29,8 +72,8 @@ const Range = () => {
           type="number"
           name="min"
           placeholder="10,000"
-          value={inputValues.min}
-          onChange={handleInputChange}
+          value={inputValues[0]}
+          onChange={handleIChange}
           className="rounded-md p-2  text-[1.rem] text-[#4A7BE5] placeholder-[#b1c2e8] focus:outline-none"
         />
       </div>
@@ -44,11 +87,13 @@ const Range = () => {
             type="number"
             name="max"
             placeholder="15,000"
-            value={inputValues.max}
-            onChange={handleInputChange}
+            value={inputValues[1]}
+            onChange={handleIChange}
             className="rounded-md p-2  text-[1.rem] text-[#4A7BE5] placeholder-[#b1c2e8] focus:outline-none"
           />
         </div>
+        
+       { console.log(formData[question.id][1])}
       </div>
     </div>
   );

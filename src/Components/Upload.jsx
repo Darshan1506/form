@@ -1,16 +1,46 @@
 import React, { useState, useRef } from "react";
-
-const Upload = () => {
+import { useValues } from "../context";
+const Upload = ({question}) => {
   const [image, setImage] = useState(null);
   const [onDrag, setOnDrag] = useState(false);
   const imageSelect = useRef();
 
+
+  const {
+    formData,
+            setFormData,
+            error,
+            setError,
+            allErrors,
+            setAllErrors,
+            handleInputChange,
+            handleOptionClick,
+            getCurrentQuestions ,
+            currentStep, setCurrentStep,
+            questionsPerStep, setQuestionsPerStep,
+            totalSteps,
+
+
+  } = useValues();
   console.log(image);
+
+
   const handleDrop = (e) => {
     e.preventDefault();
-    setImage(e.dataTransfer.files[0]);
-    setOnDrag(false);
+    console.log(e.target.files[0].size)
+    if(e.target.files[0].size > 5 * 1024 * 1024){
+      console.log("big-sizee")
+      allErrors[question.id] = true;
+    }else{
+      setImage(e.target.files[0])
+   setOnDrag(false);
+    }
+   
   };
+
+
+
+  console.log("valuee",image)
 
   const handleDrag = (e) => {
     e.preventDefault();
@@ -45,8 +75,9 @@ const Upload = () => {
 
       <input
         type="file"
-        onChange={(e) => setImage(e.target.files[0])}
+        onChange={(e) => handleDrop(e)}
         ref={imageSelect}
+        accept="image/*"
         hidden
       />
     </div>
