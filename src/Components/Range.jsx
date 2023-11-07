@@ -39,10 +39,6 @@ const Range = ({question}) => {
     }
   
     setInputValues(updatedInputValues);
-    formData[question.id] = updatedInputValues;
-  };
-
-  useEffect(() => {
 
     if ( inputValues[0] < 1000 || inputValues[0]  > inputValues[1]) {
       allErrors[question.id] = true;
@@ -51,7 +47,15 @@ const Range = ({question}) => {
     }else{
       allErrors[question.id] = false;
       error[1] = false;
+      formData[question.id] = updatedInputValues;
     }
+
+    
+  };
+
+  useEffect(() => {
+    
+    formData[question.id] = inputValues;
 
     
     localStorage.setItem("inputValues", JSON.stringify(inputValues));
@@ -63,6 +67,8 @@ const Range = ({question}) => {
   console.log(formData)
   console.log(inputValues);
   return (
+    <>
+    <div className="flex flex-col gap-5">
     <div className="flex items-center gap-2">
       <div className="flex items-center rounded-md  border-2 bg-[#E1E7F53D] focus-within:border-[#4A7BE5]">
         <div className="">
@@ -96,6 +102,18 @@ const Range = ({question}) => {
        { console.log(formData[question.id][1])}
       </div>
     </div>
+    <div>
+    {allErrors[question.id] === true ?
+                    <div className="bg-[#E55C4A13] p-2">
+                    <h1 className="font-inter font-normal text-[1rem] text-[#E55C4A]">{question.err}</h1>
+                  </div>
+                    : null}
+    </div>
+    <div>
+    
+    </div>
+    </div>
+    </>
   );
 };
 

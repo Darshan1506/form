@@ -176,6 +176,7 @@ console.log(allErrors)
                 ) : question.upload ? (
                   <>
                   <Upload question={question}/>
+
                   {allErrors[question.id] === true ?
                     <div className="bg-[#E55C4A13] p-2">
                     <h1 className="font-inter font-normal text-[1rem] text-[#E55C4A]">{question.err}</h1>
@@ -186,11 +187,7 @@ console.log(allErrors)
                   <>
                   <Range question={question}/>
                   
-                  {allErrors[question.id] === true ?
-                    <div className="bg-[#E55C4A13] p-2">
-                    <h1 className="font-inter font-normal text-[1rem] text-[#E55C4A]">{question.err}</h1>
-                  </div>
-                    : null}
+                 
                     </>
                 ) : (
                   <>
