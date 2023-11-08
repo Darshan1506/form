@@ -55,7 +55,7 @@ function Join() {
             Investors
           </p>
         </div>
-        <div className="mb-2 mt-12 ml-[5%] mr-[5%] flex w-[90%] flex-col items-center justify-start rounded-lg border-2 bg-[#fff] md:mb-0 md:ml-[6%] md:mr-0 md:w-[40%]">
+        <div className="mb-2 mt-12 ml-[5%] mr-[5%] flex w-[90%] flex-col items-center justify-start rounded-lg bg-[#fff] md:mb-0 md:ml-[6%] md:mr-0 md:w-[40%]">
           <h3 className="font-inter mt-6 text-center text-[1.19394rem] font-bold leading-[1.4rem] text-[#0F172ABF]">
             Knowledge capital invites you to join
             <br /> Angel investors in India
