@@ -5,6 +5,8 @@ import Upload from "../Components/Upload";
 import Range from "../Components/Range";
 import { questions } from "../config/questions";
 import { useValues } from "../context";
+import noise from "../assets/mainbg.png";
+
 function Multiform() {
   
   
@@ -62,7 +64,7 @@ console.log(allErrors)
       if (isMobile) {
         setQuestionsPerStep([1, 1, 1, 1, 1, 1, 1, 1, 1, 1]);
       } else {
-        setQuestionsPerStep([3, 2, 3, 3]);
+        setQuestionsPerStep([3, 1, 3, 3]);
       }
     };
 
@@ -83,9 +85,9 @@ console.log(allErrors)
     console.log(error)
 
     return (
-      <div className="w-full h-[100%] flex justify-center items-center">
-        <div className="relative border rounded-[10px] w-[70%] my-[10vh] border-[#E5E8F2] border-solid bottom-2">
-          <div className="mx-6 mt-6 flex justify-between">
+      <div className="min-h-screen flex items-center justify-center bg-surface-BG bg-cover bg-no-repeat" style={{ backgroundImage: `url(${noise})`,backgroundPosition:'center' }}>
+      <div className="relative flex  justify-center flex-col border h-screen md:h-full bg-[#fff] rounded-[10px] w-[90%] mt-[10%] mb-4 md:w-[60%] md:mt-[5vh] border-[#E5E8F2] border-solid">
+          <div className="mx-6 mt-6 flex justify-between mb-12">
             <div className="flex gap-3">
               <button
                 onClick={(e) => handlePrev(e)}
@@ -100,12 +102,13 @@ console.log(allErrors)
               <RxCross1 />
             </button>
           </div>
+          <div className="flex  justify-center flex-col h-screen md:h-full">
           {getCurrentQuestions().map((question, idx) => (
-            <div key={question.id} className="ml-[15%] mr-[13%] mt-[6%]">
-              <div className="flex flex-col gap-1 mb-12">
+            <div key={question.id} className="ml-[15%] mr-[13%] mb-12 ">
+              <div className="flex flex-col gap-1 ">
                 <label
                   htmlFor="campaignName"
-                  className="font-inter text-[1.4rem] font-[400] leading-[1.6rem] text-[#507AD3] flex"
+                  className="font-inter md:text-[1.4rem] text-[1.2rem] font-[400] leading-[1.6rem] text-[#507AD3] flex"
                 >
                   <div className="flex items-center gap-2 ml-[-2.4rem] justify-center mr-2">
                     <h1 className="text-[1.1rem] font-inter font-[200]">
@@ -120,7 +123,7 @@ console.log(allErrors)
                 </p>
                 {question.options ? (
                   <>
-                  <div className="mb-12 flex flex-col gap-1">
+                  <div className="flex flex-col gap-1 ">
                     <div className="flex flex-wrap">
                       {question.options.map((option, index) => (
                        
@@ -128,7 +131,7 @@ console.log(allErrors)
                           key={index}
                           value={option}
                           type="button" // Use type="button" to prevent form submission
-                          className={`m-[2px] p-1 text-[1rem]  ${formData[question.id]?.includes(option)
+                          className={`m-[2px] md:p-1 p-[0.15rem] text-[0.82106rem] md:text-[1rem]  ${formData[question.id]?.includes(option)
                               ? "bg-[#c2d4f9] text-[#4A7BE5] border-[#4A7BE5] border-solid border-2 rounded-md"
                               : "text-[#5A81D5D9] bg-[#E1E7F53D] border-[#E1E7F53D] border-2 rounded-md"
                             }`}
@@ -234,6 +237,7 @@ console.log(allErrors)
                 </button>
               )}
             </div>
+          </div>
           </div>
         </div>
       </div>

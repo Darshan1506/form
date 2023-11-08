@@ -1,7 +1,7 @@
 export const questions = [
     {
       id: 0,
-      ques: "Drop full name here",
+      ques: "Drop full name here *",
       description:
         "Please enter your full name.",
       placeholder: "John Doe",
@@ -11,17 +11,17 @@ export const questions = [
     },
     {
       id: 1,
-      ques: "Your LinkedIn URL",
+      ques: "Your LinkedIn URL *",
       description:
         "Add your LinkedIn URL",
         isOptional: false,
       placeholder: "https://www.linkedin.com/in/johndoe",
       regex: /https:\/\/www\.linkedin\.com\/in\/[a-zA-Z0-9-]+/ ,
-      err: "Hmm..Linkedin is missing",
+      err: "Please enter a valid LinkedIn URL (e.g., https://www.linkedin.com/in/username).",
     },
     {
       id: 2,
-      ques: "Your Work Email Address",
+      ques: "Your Work Email Address *",
       description:
         "Add your email below to get notified as soon as it is available.",
       placeholder: "johndoe@gmail.com",
@@ -30,19 +30,11 @@ export const questions = [
       err: "Please enter a valid email address (e.g., user@example.com).",
     },
     {
-        id: 3,
-        ques: "Where do you work?",
-        description:
-          "Tell us about your work",
-        placeholder: "YC",
-        isOptional: true,
-      },
-    {
-      id: 4,
-      ques: "What industries are you interested in working?",
+      id: 3,
+      ques: "What industries are you interested in working? *",
       description:
         "Tell us about your industries",
-      placeholder: "B2B, AI, Gaming",
+      placeholder: "Choose as many as you like",
       isOptional: false,
       options: [
         "Sector Agnostic",
@@ -97,11 +89,11 @@ export const questions = [
       err: "Atleast one option must be selected",
     },
     {
-      id: 5,
+      id: 4,
       ques: "Your Area Of Expertise",
       description:
-        "Expertise",
-      placeholder: "yup yup",
+        "Choose as many as you like",
+      placeholder: "Choose as many as you like",
      
  
       isOptional: true,
@@ -123,18 +115,25 @@ export const questions = [
       ],
     },
     {
-      id: 6,
-      ques: "Your preferred cheque size",
+      id: 5,
+      ques: "Your preferred cheque size: *",
       range: true,
     
       description:
-        "How much would you like to invest?",
+        "Please enter in $dollars",
       placeholder: "$10000-$25000",
     //   regex: /^[a-zA-Z\s'-]+$/ ,
       isOptional: false,
-      err: "Please indicate the range of your typical investments (e.g., $10,000 to $50,000).”",
+      err: "Please indicate the range of your typical investments (e.g., $10,000 to $50,000).",
     },
-    
+    {
+      id: 6,
+      ques: "Where do you work?",
+      description:
+        "Tell us about your work",
+      placeholder: "YC",
+      isOptional: true,
+    },
     {
       id: 7,
       ques: "Do you invest via angel syndicates?",
@@ -147,7 +146,7 @@ export const questions = [
     },
     {
       id: 8,
-      ques: "Your porfolio companies",
+      ques: "Your porfolio companies *",
       isOptional: false,
       description:
         "Add your email below to get notified as soon as it is available.",
