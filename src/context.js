@@ -28,37 +28,48 @@ const totalSteps = questionsPerStep.length;
     const endIdx = startIdx + questionsPerStep[currentStep];
     return questions.slice(startIdx, endIdx);
   };
-  const handleInputChange = (data, value) => {
-    const updatedFormData = [...formData];
-    const updatedErrorValues = [...allErrors]
+  let validationTimer;
+
+const handleInputChange = (data, value) => {
+  const updatedFormData = [...formData];
+  const updatedErrorValues = [...allErrors];
+
+  // Clear the previous validation timer
+
+
+  // Set a new timer for validation after a delay (e.g., 1000 milliseconds)
+
 
     if (data.regex) {
-      if ((data.regex.test(value))) {
-        console.log(value, data.id, "no error")
-        updatedErrorValues[data.id] = false;
+      if(value){
+        if (data.regex.test(value)) {
 
+
+        console.log(value, data.id, "no error");
+        updatedErrorValues[data.id] = false;
       } else {
-        console.log(value, data.id, "regex error there")
+        console.log(value, data.id, "regex error there");
         updatedErrorValues[data.id] = true;
       }
-    }
-      updatedFormData[data.id] = value;
-      setFormData(updatedFormData);
-      setAllErrors(updatedErrorValues)
-
-      if(!data.regex) {
-        if(updatedFormData[data.id].length === 0){
-            updatedErrorValues[data.id] = true
-            setAllErrors(updatedErrorValues)
-        }else{
-            updatedErrorValues[data.id] = false;
-            setAllErrors(updatedErrorValues)
-        }
-        
+      }else{
+        updatedErrorValues[data.id] = false;
       }
-   
-     
+      
+    } else {
+      // Handle other input types or empty values
+      if (value.length === 0) {
+        updatedErrorValues[data.id] =false;
+      } else {
+        updatedErrorValues[data.id] = false;
+      }
     }
+
+    // Update formData and error values after validation
+    updatedFormData[data.id] = value;
+    setFormData(updatedFormData);
+    setAllErrors(updatedErrorValues);
+ // Adjust the delay as needed
+};
 
     const handleOptionClick = (e, data, option) => {
         e.preventDefault();
