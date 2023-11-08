@@ -62,8 +62,8 @@ const totalSteps = questionsPerStep.length;
 
     const handleOptionClick = (e, data, option) => {
         e.preventDefault();
-        let updatedSelectedOptions;
-        console.log(Array.isArray(formData[data.id]));
+        let updatedSelectedOptions = [option];
+        console.log(data.options,"arayyyyyyyyyyyyyy");
         if (Array.isArray(formData[data.id])) {
           if (formData[data.id].includes(option)) {
             updatedSelectedOptions = formData[data.id].filter(
@@ -71,6 +71,9 @@ const totalSteps = questionsPerStep.length;
             );
           } else {
             updatedSelectedOptions = [...formData[data.id], option];
+            if (formData[data.id].includes("Sector Agnostic")) {
+              updatedSelectedOptions = [option];
+            }
           }
         } else {
           updatedSelectedOptions = [option];

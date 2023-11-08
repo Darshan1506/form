@@ -135,6 +135,10 @@ console.log(allErrors)
                               ? "bg-[#c2d4f9] text-[#4A7BE5] border-[#4A7BE5] border-solid border-2 rounded-md"
                               : "text-[#5A81D5D9] bg-[#E1E7F53D] border-[#E1E7F53D] border-2 rounded-md"
                             }`}
+                            disabled={
+                              option !== "Sector Agnostic" &&
+                              formData[question.id]?.includes("Sector Agnostic")
+                            }
                           onClick={(e) =>
                             handleOptionClick(e, question, option)
                           }
