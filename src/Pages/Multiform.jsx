@@ -141,7 +141,7 @@ console.log(allErrors)
                               (option !== "Sector Agnostic" &&
                               formData[question.id]?.includes("Sector Agnostic"))
                               ||
-                            (formData[question.id].length>0 && !formData[question.id]?.includes("Sector Agnostic") && option === "Sector Agnostic")
+                            (formData[question.id]?.length>0 && !formData[question.id]?.includes("Sector Agnostic") && option === "Sector Agnostic")
                             }
                           onClick={(e) =>
                             handleOptionClick(e, question, option)
