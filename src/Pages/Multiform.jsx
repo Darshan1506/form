@@ -133,13 +133,15 @@ console.log(allErrors)
                           key={index}
                           value={option}
                           type="button" // Use type="button" to prevent form submission
-                          className={`m-[2px] md:p-1 p-[0.15rem] text-[0.82106rem] md:text-[1rem] ${((formData[question.id]?.includes("Sector Agnostic") && option !== "Sector Agnostic")  ) && "bg-gray-900"}   ${formData[question.id]?.includes(option)
+                          className={`m-[2px] md:p-1 p-[0.15rem] text-[0.82106rem] md:text-[1rem] ${((formData[question.id]?.includes("Sector Agnostic") && option !== "Sector Agnostic")  ) && "bg-gray-100"}   ${formData[question.id]?.includes(option)
                               ? "bg-[#c2d4f9] text-[#4A7BE5] border-[#4A7BE5] border-solid border-2 rounded-md"
                               : "text-[#5A81D5D9] bg-[#E1E7F53D] border-[#E1E7F53D] border-2 rounded-md"
                             }`}
                             disabled={
                               (option !== "Sector Agnostic" &&
                               formData[question.id]?.includes("Sector Agnostic"))
+                              ||
+                            (formData[question.id].length>0 && !formData[question.id]?.includes("Sector Agnostic") && option === "Sector Agnostic")
                             }
                           onClick={(e) =>
                             handleOptionClick(e, question, option)
