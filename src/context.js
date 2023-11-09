@@ -28,52 +28,85 @@ const totalSteps = questionsPerStep.length;
     const endIdx = startIdx + questionsPerStep[currentStep];
     return questions.slice(startIdx, endIdx);
   };
-  const handleInputChange = (data, value) => {
-    const updatedFormData = [...formData];
-    const updatedErrorValues = [...allErrors]
+  let validationTimer;
 
-    // if(!value){
-    //   data.err=""
-    // } else if (data.regex) {
-    //   if ((data.regex.test(value))) {
-    //     console.log(value, data.id, "no error")
+
+const handleInputChange = (data, value) => {
+  const updatedFormData = [...formData];
+  // const updatedErrorValues = [...allErrors];
+
+  // Clear the previous validation timer
+
+
+  // Set a new timer for validation after a delay (e.g., 1000 milliseconds)
+
+
+    // if (data.regex) {
+    //   if(value){
+    //     if (data.regex.test(value)) {
+
+
+    //     console.log(value, data.id, "no error");
     //     updatedErrorValues[data.id] = false;
-    //     data.err=""
     //   } else {
-    //     console.log(value, data.id, "regex error there")
-    //     data.err="dpdldd"
+    //     console.log(value, data.id, "regex error there");
     //     updatedErrorValues[data.id] = true;
     //   }
-    // }else{
-    //   data.err=""
+    //   }else{
+    //     updatedErrorValues[data.id] = false;
+    //   }
+      
+    // } else {
+    //   // Handle other input types or empty values
+    //   if (value.length === 0) {
+    //     updatedErrorValues[data.id] =false;
+    //   } else {
+    //     updatedErrorValues[data.id] = false;
+    //   }
     // }
 
-    if (data.regex) {
-        if ((data.regex.test(value))) {
-          console.log(value, data.id, "no error")
-          updatedErrorValues[data.id] = false;
-        } else {
-          console.log(value, data.id, "regex error there")
-          updatedErrorValues[data.id] = true;
-        }
-      }
-      updatedFormData[data.id] = value;
-      setFormData(updatedFormData);
-      setAllErrors(updatedErrorValues)
+    // Update formData and error values after validation
+    updatedFormData[data.id] = value;
+    setFormData(updatedFormData);
+    // setAllErrors(updatedErrorValues);
+ // Adjust the delay as needed
+};
 
-      if(!data.regex) {
-        if(updatedFormData[data.id].length === 0){
-            updatedErrorValues[data.id] = true
-            setAllErrors(updatedErrorValues)
-        }else{
-            updatedErrorValues[data.id] = false;
-            setAllErrors(updatedErrorValues)
-        }
-        
+const onBlurChange = (data,value)=>{
+    console.log(value,"onblueeeee")
+    const updatedFormData = [...formData];
+
+    const updatedErrorValues = [...allErrors];
+
+    if (data.regex) {
+      if(value){
+        if (data.regex.test(value)) {
+
+
+        console.log(value, data.id, "no error");
+        updatedErrorValues[data.id] = false;
+      } else {
+        console.log(value, data.id, "regex error there");
+        updatedErrorValues[data.id] = true;
       }
-   
-     
+      }else{
+        updatedErrorValues[data.id] = false;
+      }
+      
+    } else {
+      // Handle other input types or empty values
+      if (value.length === 0) {
+        updatedErrorValues[data.id] =false;
+      } else {
+        updatedErrorValues[data.id] = false;
+      }
     }
+    updatedFormData[data.id] = value;
+    setFormData(updatedFormData);
+    setAllErrors(updatedErrorValues);
+
+}
+
 
     const handleOptionClick = (e, data, option) => {
         e.preventDefault();
@@ -148,6 +181,7 @@ const totalSteps = questionsPerStep.length;
             currentStep, setCurrentStep,
             questionsPerStep, setQuestionsPerStep,
             totalSteps,
+            onBlurChange
 
 
 
