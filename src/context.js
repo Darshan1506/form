@@ -32,16 +32,31 @@ const totalSteps = questionsPerStep.length;
     const updatedFormData = [...formData];
     const updatedErrorValues = [...allErrors]
 
-    if (data.regex) {
-      if ((data.regex.test(value))) {
-        console.log(value, data.id, "no error")
-        updatedErrorValues[data.id] = false;
+    // if(!value){
+    //   data.err=""
+    // } else if (data.regex) {
+    //   if ((data.regex.test(value))) {
+    //     console.log(value, data.id, "no error")
+    //     updatedErrorValues[data.id] = false;
+    //     data.err=""
+    //   } else {
+    //     console.log(value, data.id, "regex error there")
+    //     data.err="dpdldd"
+    //     updatedErrorValues[data.id] = true;
+    //   }
+    // }else{
+    //   data.err=""
+    // }
 
-      } else {
-        console.log(value, data.id, "regex error there")
-        updatedErrorValues[data.id] = true;
+    if (data.regex) {
+        if ((data.regex.test(value))) {
+          console.log(value, data.id, "no error")
+          updatedErrorValues[data.id] = false;
+        } else {
+          console.log(value, data.id, "regex error there")
+          updatedErrorValues[data.id] = true;
+        }
       }
-    }
       updatedFormData[data.id] = value;
       setFormData(updatedFormData);
       setAllErrors(updatedErrorValues)
@@ -71,9 +86,9 @@ const totalSteps = questionsPerStep.length;
             );
           } else {
             updatedSelectedOptions = [...formData[data.id], option];
-            if (formData[data.id].includes("Sector Agnostic")) {
-              updatedSelectedOptions = [option];
-            }
+           if (formData[data.id].includes("Sector Agnostic")) {
+          updatedSelectedOptions = [option];
+        }
           }
         } else {
           updatedSelectedOptions = [option];
