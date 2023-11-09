@@ -28,31 +28,65 @@ const Range = ({question}) => {
   } = useValues();
   const handleIChange = (e) => {
     const { name, value } = e.target;
-  console.log(allErrors[question.id])
-    
   
     const updatedInputValues = [...inputValues];
+    const min = updatedInputValues[0];
+    const max = updatedInputValues[1];
+  
     if (name === "min") {
-      updatedInputValues[0] = parseInt(value);
-    
+      updatedInputValues[0] = value === "" ? null : parseInt(value);
     } else if (name === "max") {
-      updatedInputValues[1] = parseInt(value);
+      updatedInputValues[1] = value === "" ? null : parseInt(value);
     }
   
     setInputValues(updatedInputValues);
-
-    if ( updatedInputValues[0] < 1000 || updatedInputValues[0]  > updatedInputValues[1]) {
-      allErrors[question.id] = true;
-      error[1] = true;
-      
-    }else{
+  
+    const isMinInvalid = updatedInputValues[0] < 1000;
+    const isMaxInvalid = updatedInputValues[1] === null || updatedInputValues[1] <= updatedInputValues[0];
+    // if(updatedInputValues[0] === null || updatedInputValues[1]){
+    //   allErrors[question.id] = true;
+    //   error[1] = true;
+    // }
+    if (isMinInvalid || isMaxInvalid) {
+      // allErrors[question.id] = true;
+      // error[1] = true;
+    } else {
       allErrors[question.id] = false;
       error[1] = false;
       formData[question.id] = updatedInputValues;
     }
-
-    
   };
+  
+const onBlurHandler = (e)=>{
+  const { name, value } = e.target;
+  
+    const updatedInputValues = [...inputValues];
+    const min = updatedInputValues[0];
+    const max = updatedInputValues[1];
+  
+    if (name === "min") {
+      updatedInputValues[0] = value === "" ? null : parseInt(value);
+    } else if (name === "max") {
+      updatedInputValues[1] = value === "" ? null : parseInt(value);
+    }
+  
+    setInputValues(updatedInputValues);
+  
+    const isMinInvalid = updatedInputValues[0] < 1000;
+    const isMaxInvalid = updatedInputValues[1] === null || updatedInputValues[1] <= updatedInputValues[0];
+    if(updatedInputValues[0] === null || updatedInputValues[1]){
+      allErrors[question.id] = true;
+      error[1] = true;
+    }
+    if (isMinInvalid || isMaxInvalid) {
+      allErrors[question.id] = true;
+      error[1] = true;
+    } else {
+      allErrors[question.id] = false;
+      error[1] = false;
+      formData[question.id] = updatedInputValues;
+    }
+}
 
   useEffect(() => {
     
@@ -81,6 +115,7 @@ const Range = ({question}) => {
           placeholder="10,000"
           value={inputValues[0]}
           onChange={handleIChange}
+          onBlur={onBlurHandler}
           className="rounded-md p-2  text-[1.rem] text-[#4A7BE5] placeholder-[#b1c2e8] focus:outline-none"
         />
       </div>
@@ -96,6 +131,7 @@ const Range = ({question}) => {
             placeholder="15,000"
             value={inputValues[1]}
             onChange={handleIChange}
+            onBlur={onBlurHandler}
             className="rounded-md p-2  text-[1.rem] text-[#4A7BE5] placeholder-[#b1c2e8] focus:outline-none"
           />
         </div>
