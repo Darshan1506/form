@@ -30,53 +30,15 @@ const totalSteps = questionsPerStep.length;
   };
   let validationTimer;
 
-
 const handleInputChange = (data, value) => {
   const updatedFormData = [...formData];
-  // const updatedErrorValues = [...allErrors];
+  const updatedErrorValues = [...allErrors];
 
   // Clear the previous validation timer
 
 
   // Set a new timer for validation after a delay (e.g., 1000 milliseconds)
 
-
-    // if (data.regex) {
-    //   if(value){
-    //     if (data.regex.test(value)) {
-
-
-    //     console.log(value, data.id, "no error");
-    //     updatedErrorValues[data.id] = false;
-    //   } else {
-    //     console.log(value, data.id, "regex error there");
-    //     updatedErrorValues[data.id] = true;
-    //   }
-    //   }else{
-    //     updatedErrorValues[data.id] = false;
-    //   }
-      
-    // } else {
-    //   // Handle other input types or empty values
-    //   if (value.length === 0) {
-    //     updatedErrorValues[data.id] =false;
-    //   } else {
-    //     updatedErrorValues[data.id] = false;
-    //   }
-    // }
-
-    // Update formData and error values after validation
-    updatedFormData[data.id] = value;
-    setFormData(updatedFormData);
-    // setAllErrors(updatedErrorValues);
- // Adjust the delay as needed
-};
-
-const onBlurChange = (data,value)=>{
-    console.log(value,"onblueeeee")
-    const updatedFormData = [...formData];
-
-    const updatedErrorValues = [...allErrors];
 
     if (data.regex) {
       if(value){
@@ -101,12 +63,13 @@ const onBlurChange = (data,value)=>{
         updatedErrorValues[data.id] = false;
       }
     }
+
+    // Update formData and error values after validation
     updatedFormData[data.id] = value;
     setFormData(updatedFormData);
     setAllErrors(updatedErrorValues);
-
-}
-
+ // Adjust the delay as needed
+};
 
     const handleOptionClick = (e, data, option) => {
         e.preventDefault();
@@ -119,9 +82,9 @@ const onBlurChange = (data,value)=>{
             );
           } else {
             updatedSelectedOptions = [...formData[data.id], option];
-           if (formData[data.id].includes("Sector Agnostic")) {
-          updatedSelectedOptions = [option];
-        }
+            if (formData[data.id].includes("Sector Agnostic")) {
+              updatedSelectedOptions = [option];
+            }
           }
         } else {
           updatedSelectedOptions = [option];
@@ -181,7 +144,6 @@ const onBlurChange = (data,value)=>{
             currentStep, setCurrentStep,
             questionsPerStep, setQuestionsPerStep,
             totalSteps,
-            onBlurChange
 
 
 
@@ -192,4 +154,3 @@ const onBlurChange = (data,value)=>{
 
 
 export const useValues = () => useContext(Context)
-

@@ -206,7 +206,7 @@ console.log(allErrors)
                   <input
                     id="campaignName"
                     placeholder={`${question.placeholder}`}
-                    value={formData[question.id] || ""}
+                    // value={formData[question.id] || ""}
                     onChange={(e) =>
                       handleInputChange(question, e.target.value)
                     }
