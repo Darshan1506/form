@@ -22,6 +22,7 @@ const Range = ({question}) => {
             currentStep, setCurrentStep,
             questionsPerStep, setQuestionsPerStep,
             totalSteps,
+            onBlurChange
 
 
   } = useValues();

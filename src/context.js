@@ -1,4 +1,3 @@
-// context.js
 import { Children, createContext, useContext, useState, useEffect } from 'react';
 import { questions } from './config/questions';
 const Context = createContext();
@@ -30,6 +29,7 @@ const totalSteps = questionsPerStep.length;
   };
   let validationTimer;
 
+
 const handleInputChange = (data, value) => {
   const updatedFormData = [...formData];
   const updatedErrorValues = [...allErrors];
@@ -39,6 +39,43 @@ const handleInputChange = (data, value) => {
 
   // Set a new timer for validation after a delay (e.g., 1000 milliseconds)
 
+
+    if (data.regex) {
+      if(value){
+        if (data.regex.test(value)) {
+
+
+        console.log(value, data.id, "no error");
+        updatedErrorValues[data.id] = false;
+      } else {
+        console.log(value, data.id, "regex error there");
+        // updatedErrorValues[data.id] = true;
+      }
+      }else{
+        updatedErrorValues[data.id] = false;
+      }
+      
+    } else {
+      // Handle other input types or empty values
+      if (value.length === 0) {
+        updatedErrorValues[data.id] =false;
+      } else {
+        updatedErrorValues[data.id] = false;
+      }
+    }
+
+    // Update formData and error values after validation
+    updatedFormData[data.id] = value;
+    setFormData(updatedFormData);
+    setAllErrors(updatedErrorValues);
+ // Adjust the delay as needed
+};
+
+const onBlurChange = (data,value)=>{
+    console.log(value,"onblueeeee")
+    const updatedFormData = [...formData];
+
+    const updatedErrorValues = [...allErrors];
 
     if (data.regex) {
       if(value){
@@ -63,35 +100,46 @@ const handleInputChange = (data, value) => {
         updatedErrorValues[data.id] = false;
       }
     }
-
-    // Update formData and error values after validation
     updatedFormData[data.id] = value;
     setFormData(updatedFormData);
     setAllErrors(updatedErrorValues);
- // Adjust the delay as needed
-};
 
-    const handleOptionClick = (e, data, option) => {
-        e.preventDefault();
-        let updatedSelectedOptions = [option];
-        console.log(data.options,"arayyyyyyyyyyyyyy");
-        if (Array.isArray(formData[data.id])) {
-          if (formData[data.id].includes(option)) {
-            updatedSelectedOptions = formData[data.id].filter(
-              (item) => item !== option
-            );
-          } else {
-            updatedSelectedOptions = [...formData[data.id], option];
-            if (formData[data.id].includes("Sector Agnostic")) {
-              updatedSelectedOptions = [option];
-            }
-          }
-        } else {
-          updatedSelectedOptions = [option];
-        }
+}
+
+
+const handleOptionClick = (e, data, option) => {
+  e.preventDefault();
+  
+  // Check if "Sector Agnostic" is clicked
+  if (option === "Sector Agnostic") {
+    // If "Sector Agnostic" is clicked, select all options
+    const updatedSelectedOptions = data.options;
+    handleInputChange(data, updatedSelectedOptions);
+  } else {
+    let updatedSelectedOptions = [option];
     
-        handleInputChange(data, updatedSelectedOptions);
-      };
+    if (Array.isArray(formData[data.id])) {
+      if (formData[data.id].includes(option)) {
+        updatedSelectedOptions = formData[data.id].filter(
+          (item) => item !== option
+        );
+      } else {
+        updatedSelectedOptions = [...formData[data.id], option];
+      }
+    } else {
+      updatedSelectedOptions = [option];
+    }
+    
+    // If "Sector Agnostic" was previously selected, unselect it
+    if (formData[data.id]?.includes("Sector Agnostic")) {
+      updatedSelectedOptions = updatedSelectedOptions.filter(
+        (item) => item !== "Sector Agnostic"
+      );
+    }
+
+    handleInputChange(data, updatedSelectedOptions);
+  }
+};
 
       useEffect(() => {
         localStorage.setItem("formData", JSON.stringify(formData));
@@ -144,6 +192,7 @@ const handleInputChange = (data, value) => {
             currentStep, setCurrentStep,
             questionsPerStep, setQuestionsPerStep,
             totalSteps,
+            onBlurChange
 
 
 

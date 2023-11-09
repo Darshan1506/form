@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { AiOutlineArrowRight } from "react-icons/ai";
 import { RxCross1 } from "react-icons/rx";
 import Upload from "../Components/Upload";
@@ -18,8 +18,8 @@ function Multiform() {
             allErrors,
             setAllErrors,
             handleInputChange,
-            handleOptionClick,
             onBlurChange,
+            handleOptionClick,
             getCurrentQuestions ,
             currentStep, setCurrentStep,
             questionsPerStep, setQuestionsPerStep,
@@ -43,18 +43,20 @@ const [clickedNext, setClickedNext] = useState(false)
   };
  
 
- 
+ useEffect(() => {
+  setClickedNext(false);
+ },[error])
 
   const handleNext = (e) => {
     e.preventDefault();
 
     if (Array.isArray(error)) {
-      if (!error.includes(true) && currentStep < totalSteps - 1) {
+      if (!error.includes(true) && !allErrors?.includes(true) && currentStep < totalSteps - 1) {
+        console.log(error,"nexttt")
         setClickedNext(false);
         setCurrentStep(currentStep + 1);
       }else{
         setClickedNext(true);
-       
       }
     }
   };
@@ -82,6 +84,29 @@ console.log(allErrors)
   }, []);
 
  
+  const [inputs, setInputs] = useState(['Input 1']); // Initial input
+  const inputRefs = useRef([]);
+  const handleKeyDown = (e, index) => {
+    if(index !== 2){
+      if (e.key === 'Enter' ) {
+        e.preventDefault();
+        if (index === inputs.length - 1) {
+          // If "Enter" is pressed in the last input, add a new one.
+          setInputs([...inputs, 'Input ' + (inputs.length + 1)]);
+        }
+        if(inputs.length < 3 ){
+          inputRefs.current[index + 1].focus(); // Focus on the next input.
+  
+        }else{
+          setInputs([])
+        }
+      }
+    }
+  };
+
+  const addInputRef = (ref) => {
+    inputRefs.current.push(ref);
+  };
 
  
     console.log(formData);
@@ -134,16 +159,16 @@ console.log(allErrors)
                           key={index}
                           value={option}
                           type="button" // Use type="button" to prevent form submission
-                          className={`m-[2px] md:p-1 p-[0.15rem] text-[0.82106rem] md:text-[1rem] ${((formData[question.id]?.includes("Sector Agnostic") && option !== "Sector Agnostic")  ) && "bg-gray-100"}   ${formData[question.id]?.includes(option)
+                          className={`m-[2px] md:p-1 p-[0.15rem] text-[0.82106rem] md:text-[1rem]    ${formData[question.id]?.includes(option)
                               ? "bg-[#c2d4f9] text-[#4A7BE5] border-[#4A7BE5] border-solid border-2 rounded-md"
                               : "text-[#5A81D5D9] bg-[#E1E7F53D] border-[#E1E7F53D] border-2 rounded-md"
                             }`}
-                            disabled={
-                              (option !== "Sector Agnostic" &&
-                              formData[question.id]?.includes("Sector Agnostic"))
-                              ||
-                            (formData[question.id]?.length>0 && !formData[question.id]?.includes("Sector Agnostic") && option === "Sector Agnostic")
-                            }
+                            // disabled={
+                            //   (option !== "Sector Agnostic" &&
+                            //   formData[question.id]?.includes("Sector Agnostic"))
+                            //   ||
+                            // (formData[question.id]?.length>0 && !formData[question.id]?.includes("Sector Agnostic") && option === "Sector Agnostic")
+                            // }
                           onClick={(e) =>
                             handleOptionClick(e, question, option)
                           }
@@ -158,7 +183,7 @@ console.log(allErrors)
                   
                   {allErrors[question.id] === true ?
                 <div className="bg-[#E55C4A13] p-2">
-                <h1 className="font-inter font-normal text-[1rem] text-[#E55C4A]">{question.err}</h1>
+                <h1 className="font-inter font-normal text-[0.825rem] md:text-[1rem] text-[#E55C4A]">{question.err}</h1>
               </div>
                 : null}
                   </>
@@ -191,7 +216,7 @@ console.log(allErrors)
 
                   {allErrors[question.id] === true ?
                     <div className="bg-[#E55C4A13] p-2">
-                    <h1 className="font-inter font-normal text-[1rem] text-[#E55C4A]">{question.err}</h1>
+                <h1 className="font-inter font-normal text-[0.825rem] md:text-[1rem] text-[#E55C4A]">{question.err}</h1>
                   </div>
                     : null}
                   </>
@@ -206,17 +231,19 @@ console.log(allErrors)
                   <input
                     id="campaignName"
                     placeholder={`${question.placeholder}`}
-                    // value={formData[question.id] || ""}
+                    value={formData[question.id] || ""}
                     onChange={(e) =>
                       handleInputChange(question, e.target.value)
                     }
-                    onBlur={(e)=>onBlurChange(question,e.target.value)}
                     className="placeholder-[#b1c2e8] h-11 text-[#507AD3] font-inter text-[1.5rem]  border-b border-gray-300  focus:border-blue-500  focus:outline-none"
                     required={true}
+                    onBlur={(e)=>onBlurChange(question,e.target.value)}
+                    ref={(ref) => addInputRef(ref)}
+                    onKeyDown={(e) => handleKeyDown(e, question.id)}
                   />
                   {allErrors[question.id] === true ?
                 <div className="bg-[#E55C4A13] p-2">
-                <h1 className="font-inter font-normal text-[1rem] text-[#E55C4A]">{question.err}</h1>
+                <h1 className="font-inter font-normal text-[0.825rem] md:text-[1rem] text-[#E55C4A]">{question.err}</h1>
               </div>
                 : null}
 
@@ -229,9 +256,9 @@ console.log(allErrors)
             </div>
           ))}
 
-          <div className="flex  justify-between mx-6 mb-6 text-[#fff] p-2 text-[1rem]">
+          <div className="flex  justify-between mx-6 mb-6 text-[#fff] p-2 ">
             {
-              clickedNext ? <div className="font-inter ml-[10%] bg-[#E55C4A13] px-2  flex justify-center items-center font-normal text-[1rem] text-[#E55C4A]">
+              clickedNext ? <div className="font-inter ml-[10%] bg-[#E55C4A13] px-2  flex justify-center items-center font-normal text-[0.825rem] md:text-[1rem] text-[#E55C4A]">
                Please fill all the required fields
             </div>
 
