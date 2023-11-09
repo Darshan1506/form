@@ -155,7 +155,7 @@ console.log(allErrors)
                     <div className="flex flex-wrap">
                       {question.options.map((option, index) => (
                        
-                        <button
+                     <button
                           key={index}
                           value={option}
                           type="button" // Use type="button" to prevent form submission
@@ -231,7 +231,7 @@ console.log(allErrors)
                   <input
                     id="campaignName"
                     placeholder={`${question.placeholder}`}
-                    value={formData[question.id] || ""}
+                    // value={formData[question.id] || ""}
                     onChange={(e) =>
                       handleInputChange(question, e.target.value)
                     }
@@ -256,7 +256,7 @@ console.log(allErrors)
             </div>
           ))}
 
-          <div className="flex  justify-between mx-6 mb-6 text-[#fff] p-2 ">
+                   <div className="flex  justify-between mx-6 mb-6 text-[#fff] p-2 ">
             {
               clickedNext ? <div className="font-inter ml-[10%] bg-[#E55C4A13] px-2  flex justify-center items-center font-normal text-[0.825rem] md:text-[1rem] text-[#E55C4A]">
                Please fill all the required fields
