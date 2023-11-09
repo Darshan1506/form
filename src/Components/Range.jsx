@@ -22,6 +22,7 @@ const Range = ({question}) => {
             currentStep, setCurrentStep,
             questionsPerStep, setQuestionsPerStep,
             totalSteps,
+            onBlurChange
 
 
   } = useValues();
@@ -40,7 +41,7 @@ const Range = ({question}) => {
   
     setInputValues(updatedInputValues);
 
-    if ( inputValues[0] < 1000 || inputValues[0]  > inputValues[1]) {
+    if ( updatedInputValues[0] < 1000 || updatedInputValues[0]  > updatedInputValues[1]) {
       allErrors[question.id] = true;
       error[1] = true;
       

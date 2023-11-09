@@ -18,6 +18,7 @@ function Multiform() {
             allErrors,
             setAllErrors,
             handleInputChange,
+            onBlurChange,
             handleOptionClick,
             getCurrentQuestions ,
             currentStep, setCurrentStep,
@@ -28,7 +29,7 @@ function Multiform() {
   } = useValues();
 
   
-
+const [clickedNext, setClickedNext] = useState(false)
  
 
  
@@ -47,11 +48,14 @@ function Multiform() {
   const handleNext = (e) => {
     e.preventDefault();
 
-
-
     if (Array.isArray(error)) {
       if (!error.includes(true) && currentStep < totalSteps - 1) {
+        console.log(error,"nexttt")
+        setClickedNext(false);
         setCurrentStep(currentStep + 1);
+      }else{
+        setClickedNext(true);
+       
       }
     }
   };
@@ -131,13 +135,15 @@ console.log(allErrors)
                           key={index}
                           value={option}
                           type="button" // Use type="button" to prevent form submission
-                          className={`m-[2px] md:p-1 p-[0.15rem] text-[0.82106rem] md:text-[1rem]  ${formData[question.id]?.includes(option)
+                          className={`m-[2px] md:p-1 p-[0.15rem] text-[0.82106rem] md:text-[1rem] ${((formData[question.id]?.includes("Sector Agnostic") && option !== "Sector Agnostic")  ) && "bg-gray-100"}   ${formData[question.id]?.includes(option)
                               ? "bg-[#c2d4f9] text-[#4A7BE5] border-[#4A7BE5] border-solid border-2 rounded-md"
                               : "text-[#5A81D5D9] bg-[#E1E7F53D] border-[#E1E7F53D] border-2 rounded-md"
                             }`}
                             disabled={
-                              option !== "Sector Agnostic" &&
-                              formData[question.id]?.includes("Sector Agnostic")
+                              (option !== "Sector Agnostic" &&
+                              formData[question.id]?.includes("Sector Agnostic"))
+                              ||
+                            (formData[question.id]?.length>0 && !formData[question.id]?.includes("Sector Agnostic") && option === "Sector Agnostic")
                             }
                           onClick={(e) =>
                             handleOptionClick(e, question, option)
@@ -153,7 +159,7 @@ console.log(allErrors)
                   
                   {allErrors[question.id] === true ?
                 <div className="bg-[#E55C4A13] p-2">
-                <h1 className="font-inter font-normal text-[1rem] text-[#E55C4A]">{question.err}</h1>
+                <h1 className="font-inter font-normal text-[0.825rem] md:text-[1rem] text-[#E55C4A]">{question.err}</h1>
               </div>
                 : null}
                   </>
@@ -186,7 +192,7 @@ console.log(allErrors)
 
                   {allErrors[question.id] === true ?
                     <div className="bg-[#E55C4A13] p-2">
-                    <h1 className="font-inter font-normal text-[1rem] text-[#E55C4A]">{question.err}</h1>
+                <h1 className="font-inter font-normal text-[0.825rem] md:text-[1rem] text-[#E55C4A]">{question.err}</h1>
                   </div>
                     : null}
                   </>
@@ -207,10 +213,11 @@ console.log(allErrors)
                     }
                     className="placeholder-[#b1c2e8] h-11 text-[#507AD3] font-inter text-[1.5rem]  border-b border-gray-300  focus:border-blue-500  focus:outline-none"
                     required={true}
+                    onBlur={(e)=>onBlurChange(question,e.target.value)}
                   />
                   {allErrors[question.id] === true ?
                 <div className="bg-[#E55C4A13] p-2">
-                <h1 className="font-inter font-normal text-[1rem] text-[#E55C4A]">{question.err}</h1>
+                <h1 className="font-inter font-normal text-[0.825rem] md:text-[1rem] text-[#E55C4A]">{question.err}</h1>
               </div>
                 : null}
 
@@ -223,10 +230,15 @@ console.log(allErrors)
             </div>
           ))}
 
-          <div className="flex justify-between mx-6 mb-6 text-[#fff] p-2 text-[1rem]">
-            <div className="text-red-500">
-              {error?.includes(true) ? "All fileds are required" : ""}
+          <div className="flex  justify-between mx-6 mb-6 text-[#fff] p-2 ">
+            {
+              clickedNext ? <div className="font-inter ml-[10%] bg-[#E55C4A13] px-2  flex justify-center items-center font-normal text-[0.825rem] md:text-[1rem] text-[#E55C4A]">
+               Please fill all the required fields
             </div>
+
+              : <div> </div>
+            }
+            
             <div>
               {currentStep === totalSteps - 1 ? (
                 <button className="bg-[#4A7BE5] px-[18px] py-[12px] text-[18px] rounded-[5.926px] border border-solid ">

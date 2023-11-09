@@ -80,6 +80,7 @@ const Upload = ({question}) => {
         accept="image/*"
         hidden
       />
+      
     </div>
   );
 };
