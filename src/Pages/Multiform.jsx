@@ -43,19 +43,20 @@ const [clickedNext, setClickedNext] = useState(false)
   };
  
 
- 
+ useEffect(() => {
+  setClickedNext(false);
+ },[error])
 
   const handleNext = (e) => {
     e.preventDefault();
 
     if (Array.isArray(error)) {
-      if (!error.includes(true) && currentStep < totalSteps - 1) {
+      if (!error.includes(true) && !allErrors?.includes(true) && currentStep < totalSteps - 1) {
         console.log(error,"nexttt")
         setClickedNext(false);
         setCurrentStep(currentStep + 1);
       }else{
         setClickedNext(true);
-       
       }
     }
   };
