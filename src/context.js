@@ -108,27 +108,39 @@ const onBlurChange = (data,value)=>{
 }
 
 
-    const handleOptionClick = (e, data, option) => {
-        e.preventDefault();
-        let updatedSelectedOptions = [option];
-        console.log(data.options,"arayyyyyyyyyyyyyy");
-        if (Array.isArray(formData[data.id])) {
-          if (formData[data.id].includes(option)) {
-            updatedSelectedOptions = formData[data.id].filter(
-              (item) => item !== option
-            );
-          } else {
-            updatedSelectedOptions = [...formData[data.id], option];
-           if (formData[data.id].includes("Sector Agnostic")) {
-          updatedSelectedOptions = [option];
-        }
-          }
-        } else {
-          updatedSelectedOptions = [option];
-        }
+const handleOptionClick = (e, data, option) => {
+  e.preventDefault();
+  
+  // Check if "Sector Agnostic" is clicked
+  if (option === "Sector Agnostic") {
+    // If "Sector Agnostic" is clicked, select all options
+    const updatedSelectedOptions = data.options;
+    handleInputChange(data, updatedSelectedOptions);
+  } else {
+    let updatedSelectedOptions = [option];
     
-        handleInputChange(data, updatedSelectedOptions);
-      };
+    if (Array.isArray(formData[data.id])) {
+      if (formData[data.id].includes(option)) {
+        updatedSelectedOptions = formData[data.id].filter(
+          (item) => item !== option
+        );
+      } else {
+        updatedSelectedOptions = [...formData[data.id], option];
+      }
+    } else {
+      updatedSelectedOptions = [option];
+    }
+    
+    // If "Sector Agnostic" was previously selected, unselect it
+    if (formData[data.id]?.includes("Sector Agnostic")) {
+      updatedSelectedOptions = updatedSelectedOptions.filter(
+        (item) => item !== "Sector Agnostic"
+      );
+    }
+
+    handleInputChange(data, updatedSelectedOptions);
+  }
+};
 
       useEffect(() => {
         localStorage.setItem("formData", JSON.stringify(formData));
