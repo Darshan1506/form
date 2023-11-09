@@ -136,17 +136,17 @@ console.log(allErrors)
               <div className="flex flex-col gap-1 ">
                 <label
                   htmlFor="campaignName"
-                  className="font-inter md:text-[1.4rem] text-[1.2rem] font-[400] leading-[1.6rem] text-[#507AD3] flex"
+                  className="font-inter md:text-[1.4rem] text-[1rem] font-[400] leading-[1.6rem] text-[#507AD3] flex"
                 >
                   <div className="flex items-center gap-2 ml-[-2.4rem] justify-center mr-2">
-                    <h1 className="text-[1.1rem] font-inter font-[200]">
+                    <h1 className="md:text-[1.1rem] text-[0.825rem] font-inter font-[200]">
                       {question.id + 1}
                     </h1>
                     <AiOutlineArrowRight size={15} />
                   </div>
                   {question.ques}
                 </label>
-                <p className="font-inter mb-2 text-[1.125rem] font-[200] text-[#5A81D9] opacity-[0.7]">
+                <p className="font-inter mb-2 text-[0.825rem] md:text-[1.125rem] font-[200] text-[#5A81D9] opacity-[0.7]">
                   {question.description}
                 </p>
                 {question.options ? (
@@ -159,7 +159,7 @@ console.log(allErrors)
                           key={index}
                           value={option}
                           type="button" // Use type="button" to prevent form submission
-                          className={`m-[2px] md:p-1 p-[0.15rem] text-[0.82106rem] md:text-[1rem]    ${formData[question.id]?.includes(option)
+                          className={`m-[2px] md:p-1 p-[0.15rem] text-[0.625rem]  md:text-[1rem]    ${formData[question.id]?.includes(option)
                               ? "bg-[#c2d4f9] text-[#4A7BE5] border-[#4A7BE5] border-solid border-2 rounded-md"
                               : "text-[#5A81D5D9] bg-[#E1E7F53D] border-[#E1E7F53D] border-2 rounded-md"
                             }`}
@@ -267,13 +267,13 @@ console.log(allErrors)
             
             <div>
               {currentStep === totalSteps - 1 ? (
-                <button className="bg-[#4A7BE5] px-[18px] py-[12px] text-[18px] rounded-[5.926px] border border-solid ">
+                <button className="bg-[#4A7BE5] px-[18px] md:py-[12px] py-[6px] text-[18px] rounded-[5.926px] border border-solid ">
                   Submit Response
                 </button>
               ) : (
                 <button
                   onClick={(e) => handleNext(e)}
-                  className="bg-[#4A7BE5] px-[18px] py-[12px] text-[18px] rounded-[5.926px] border border-solid "
+                  className="bg-[#4A7BE5] px-[18px] md:py-[12px] py-[6px] text-[18px] rounded-[5.926px] border border-solid "
                 >
                   Next
                 </button>

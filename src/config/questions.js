@@ -83,7 +83,6 @@ export const questions = [
         "Travel and Tourism",
         "Wearables",
         "Others",
-        "Others"
     ]
     ,
       err: "Atleast one option must be selected",
