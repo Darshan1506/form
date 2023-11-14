@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useValues } from "../context";
 const Range = ({question}) => {
 
@@ -101,6 +101,17 @@ const onBlurHandler = (e)=>{
 
   console.log(formData)
   console.log(inputValues);
+
+  const inputRefs = useRef([React.createRef(), React.createRef()]);
+
+  const handleKeyDown = (e, index) => {
+    if (e.key === 'Enter') {
+      e.preventDefault();
+      const nextIndex = index === 0 ? 1 : 0;
+      inputRefs.current[nextIndex].current.focus();
+    }
+  };
+
   return (
     <>
     <div className="flex flex-col gap-5">
@@ -115,6 +126,8 @@ const onBlurHandler = (e)=>{
           placeholder="10,000"
           value={inputValues[0]}
           onChange={handleIChange}
+          ref={inputRefs.current[0]}
+        onKeyDown={(e) => handleKeyDown(e, 0)}
           onBlur={onBlurHandler}
           className="rounded-md p-2  text-[1.rem] text-[#4A7BE5] placeholder-[#b1c2e8] focus:outline-none"
         />
@@ -131,6 +144,8 @@ const onBlurHandler = (e)=>{
             placeholder="15,000"
             value={inputValues[1]}
             onChange={handleIChange}
+            ref={inputRefs.current[1]}
+        onKeyDown={(e) => handleKeyDown(e, 1)}
             onBlur={onBlurHandler}
             className="rounded-md p-2  text-[1.rem] text-[#4A7BE5] placeholder-[#b1c2e8] focus:outline-none"
           />

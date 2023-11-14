@@ -103,14 +103,35 @@ console.log(allErrors)
       }
     }
   };
-
+  
+  // useEffect(() => {
+  //   console.log(inputs,"loggggggggggggg")
+  // }, [inputs])
+  
   const addInputRef = (ref) => {
     inputRefs.current.push(ref);
   };
+  // useEffect(() => {
+  //   const listener = event => {
+  //     if (event.code === "Enter" || event.code === "NumpadEnter") {
+  //       console.log("Enter key was pressed. Run your function.");
+  //       event.preventDefault();
+  //      handleNext(event)
+  //     }
+  //   };
+  //   document.addEventListener("keydown", listener);
+  //   return () => {
+  //     document.removeEventListener("keydown", listener);
+  //   };
+  // }, []);
+  const submitButtonRef = useRef();
 
- 
-    console.log(formData);
-    console.log(error)
+  const handleKeyPress = (e)=>{
+    const x = e.keyCode;
+    if (x === 13) {
+      handleNext(e);
+    }
+  }
 
     return (
       <div className="min-h-screen flex items-center justify-center bg-surface-BG bg-cover bg-no-repeat" style={{ backgroundImage: `url(${noise})`,backgroundPosition:'center' }}>
@@ -242,7 +263,7 @@ console.log(allErrors)
                     onKeyDown={(e) => handleKeyDown(e, question.id)}
                   />
                   {allErrors[question.id] === true ?
-                <div className="bg-[#E55C4A13] p-2">
+                <div className="bg-[#E55C4A13] p-2 flex-wrap">
                 <h1 className="font-inter font-normal text-[0.825rem] md:text-[1rem] text-[#E55C4A]">{question.err}</h1>
               </div>
                 : null}
@@ -256,7 +277,7 @@ console.log(allErrors)
             </div>
           ))}
 
-          <div className="flex  justify-between mx-6 mb-6 text-[#fff] p-2 ">
+          <div className="flex flex-wrap justify-between mx-6 mb-6 text-[#fff] p-2 ">
             {
               clickedNext ? <div className="font-inter ml-[10%] bg-[#E55C4A13] px-2  flex justify-center items-center font-normal text-[0.825rem] md:text-[1rem] text-[#E55C4A]">
                Please fill all the required fields
@@ -267,12 +288,15 @@ console.log(allErrors)
             
             <div>
               {currentStep === totalSteps - 1 ? (
-                <button className="bg-[#4A7BE5] px-[18px] md:py-[12px] py-[6px] text-[18px] rounded-[5.926px] border border-solid ">
+                <button           ref={submitButtonRef}
+                className="bg-[#4A7BE5] px-[18px] md:py-[12px] py-[6px] text-[18px] rounded-[5.926px] border border-solid ">
                   Submit Response
                 </button>
               ) : (
                 <button
                   onClick={(e) => handleNext(e)}
+                  onKeyDown={(e)=>handleKeyPress(e)}
+                  ref={submitButtonRef}
                   className="bg-[#4A7BE5] px-[18px] md:py-[12px] py-[6px] text-[18px] rounded-[5.926px] border border-solid "
                 >
                   Next

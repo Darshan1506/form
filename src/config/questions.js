@@ -17,7 +17,7 @@ export const questions = [
         isOptional: false,
       placeholder: "https://www.linkedin.com/in/johndoe",
       regex: /https:\/\/www\.linkedin\.com\/in\/[a-zA-Z0-9-]+/ ,
-      err: "Please enter a valid LinkedIn URL (e.g., https://www.linkedin.com/in/username).",
+      err: "Please enter a valid LinkedIn URL (e.g., https://www.linkedin.com/in/user).",
     },
     {
       id: 2,
